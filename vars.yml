@@ -1,0 +1,14 @@
+# vars file for YumConfiguration
+
+mounting_path: "/dvd"
+
+dvd_iso: "/dev/cdrom"
+
+appstream_loc: "file:///dvd/AppStream"
+
+baseos_loc: "file:///dvd/BaseOS"
+
+installing_software: "httpd"
+
+src_loc: "/root/my.html"
+dest_loc: "/var/www/html"
