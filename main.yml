@@ -1,0 +1,42 @@
+# tasks file for YumConfiguration
+#add the location of defined variables here
+- name: "Creating Directory"
+  file:
+       state: directory
+       path: "{{ mounting_path }}"
+- name: "Mounting /dev/cdrom to /dvd"
+  mount:
+       src: "{{ dvd_iso }}"
+       path: "{{ mounting_path }}"
+       state: mounted
+       fstype: "iso9660"
+- name: "AppStream"
+  yum_repository:
+       baseurl: "{{ appstream_loc }}"
+       name: "appstream"
+       description: "dvd1"
+       gpgcheck: no
+- name: "BaseOS"
+  yum_repository:
+       baseurl: "{{ baseos_loc }}"
+       name: "baseos"
+       description: "dvd2"
+       gpgcheck: no
+- name: "Installing HTTPD"
+  package:
+       name: "{{ installing_software }}"
+       state: present
+- name: "Copying the Files"
+  template:
+       src: "{{ src_loc }}"
+       dest: "{{ dest_loc }}"
+  notify: "web_restart"
+  #- name: "do not permit traffic in default zone on port 80/tcp"
+  #  ansible.posix.firewalld:
+          #       port: 80/tcp
+       #       permanent: yes
+       #       state: disabled
+- name: "Staring Httpd"
+  service:
+       name: "{{ installing_software }}"
+       state: started
